@@ -1,0 +1,12 @@
+
+
+edit to file_to_stage.txt
+
+
+
+
+Another edit to file_to_stage.txt
+
+
+
+One more edit to file_to_stage.txt
