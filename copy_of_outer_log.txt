@@ -1,0 +1,242 @@
+This is a record of the git related actions taken in this training. We believe this will be the last practical git training before we move on to gitlab.
+
+git version 2.34.1
+
+We've set the absolute-path of this file to an environmental variable for easier reference as simply "$log":
+	export log=/home/alex/git_basics/pure_practice/outer_log.txt
+
+Today a more practical guide, we'll be following the steps found at https://www.baeldung.com/ops/git-guide.
+
+We learn next about the git help command and its various targets. I prefer the "git help <arg>" syntax as it casts help as a subfunction of git, not a flag on another function's execution.
+
+
+We want to get out of tutorial hell ASAP!
+
+
+The config allows layers of setting:
+	system:
+		system-wide, powerful
+	global:
+		all repo's of a user on the system
+	local:
+		default, a repo
+	working tree:
+		a branch?
+	file:
+		a file
+user.name=Alex
+user.email=alexander.m.sommers@gmail.com
+core.editor=nano
+
+When in doubt, google it. Barring that, use "git help <command which is giving you problems>".
+
+First we will make a repo on the computer, then we will make one on github and bring it down.
+Since the local_to_remote repo was instantiated on our local machine, it will have no remotes, which are addressess used to send repo versions around, we will need to do this manually.
+Note that "git branch" seems not to report even the main branch before the first commit, though the .git dir has been created.
+
+
+
+
+
+
+We'll practice staging and unstaging a file.
+
+
+file_to_stage.txt
+file_to_unstage.txt
+xmple_file.txt
+On branch main
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	file_to_stage.txt
+	file_to_unstage.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   file_to_stage.txt
+	new file:   file_to_unstage.txt
+
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   file_to_stage.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	file_to_unstage.txt
+
+On branch main
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	file_to_unstage.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+Sometimes it might be valueable to see *what* differences there are between the local repo and the staging area, the staging area and the working dir.
+
+As I understand it, the "record" git keeps is as such:
+	A commit creates a snapshot comprised of modified files, or pointers to previously possessed and unmodified files (this pointer use keeps git lightweight).
+	You local repo is a linked timeline of such snapshots.
+	Your working directory is a populated filetree managed by git. It will have a different population for each branch your repo has.
+	When you make edits to the local dir, some files are no longer as they appear in the most recent commit, as described by the "index".
+	The "staging area" is a draft of a new index, and the index is just the most recent certified definition of the branch, the most recent snapshot.
+	Commiting publishes a new snapshot, a new index, declares it the most up-to-date version, and appends it to the history of the branch.
+	I think there are special rules about renaming and deleating files.
+
+
+
+make an edit to file_to_stage.txt
+look at the diff (default working dir to index, the most recent snapshot)
+
+diff --git a/xmpl_dir/file_to_stage.txt b/xmpl_dir/file_to_stage.txt
+index e69de29..a39692f 100644
+--- a/xmpl_dir/file_to_stage.txt
++++ b/xmpl_dir/file_to_stage.txt
+@@ -0,0 +1,5 @@
++
++
++edit to file_to_stage.txt
++
++
+
+Add to the stagin area, get status
+
+M  file_to_stage.txt
+?? file_to_unstage.txt
+
+Two columns of characters:
+	M means modified, A means added, there's probably an R, or D, for removed.
+	? means untracked, so git is aware the file is present, but also knows it hasn't been involved in the record before.
+	All new files start untracked and then, when you tell git to add them to the stagin area, it starts tracking them.
+	Becasue the staging area is the snapshot in progress, git tracks what happens to the files in the snapshot, like wandering into a photographer's shot, now they know about you.
+	the first column shows differences between the head (I think), the cannonically current snapshot, and the staging area, the incipient snapshot. The second column shows diferences between the staging area and the working dir.
+
+
+
+
+MM file_to_stage.txt
+?? file_to_unstage.txt
+diff --git a/xmpl_dir/file_to_stage.txt b/xmpl_dir/file_to_stage.txt
+index a39692f..7b131fa 100644
+--- a/xmpl_dir/file_to_stage.txt
++++ b/xmpl_dir/file_to_stage.txt
+@@ -3,3 +3,8 @@
+ edit to file_to_stage.txt
+ 
+ 
++
++
++Another edit to file_to_stage.txt
++
++
+diff --git a/xmpl_dir/file_to_stage.txt b/xmpl_dir/file_to_stage.txt
+index e69de29..a39692f 100644
+--- a/xmpl_dir/file_to_stage.txt
++++ b/xmpl_dir/file_to_stage.txt
+@@ -0,0 +1,5 @@
++
++
++edit to file_to_stage.txt
++
++
+
+We've added a few files to practice doing so, and have edited several as well.
+
+MM xmpl_dir/file_to_stage.txt
+?? another_markdown_file.md
+?? xmpl_dir/file_to_unstage.txt
+?? xmpl_mkdwn.md
+
+To push something up to github I think we need to install "gh".
+
+Work seamlessly with GitHub from the command line.
+
+USAGE
+  gh <command> <subcommand> [flags]
+
+CORE COMMANDS
+  browse:     Open the repository in the browser
+  codespace:  Connect to and manage your codespaces
+  gist:       Manage gists
+  issue:      Manage issues
+  pr:         Manage pull requests
+  release:    Manage GitHub releases
+  repo:       Create, clone, fork, and view repositories
+
+ACTIONS COMMANDS
+  actions:    Learn about working with GitHub Actions
+  run:        View details about workflow runs
+  workflow:   View details about GitHub Actions workflows
+
+ADDITIONAL COMMANDS
+  alias:      Create command shortcuts
+  api:        Make an authenticated GitHub API request
+  auth:       Login, logout, and refresh your authentication
+  completion: Generate shell completion scripts
+  config:     Manage configuration for gh
+  extension:  Manage gh extensions
+  gpg-key:    Manage GPG keys
+  help:       Help about any command
+  secret:     Manage GitHub secrets
+  ssh-key:    Manage SSH keys
+
+FLAGS
+  --help      Show help for command
+  --version   Show gh version
+
+EXAMPLES
+  $ gh issue create
+  $ gh repo clone cli/cli
+  $ gh pr checkout 321
+
+ENVIRONMENT VARIABLES
+  See 'gh help environment' for the list of supported environment variables.
+
+LEARN MORE
+  Use 'gh <command> <subcommand> --help' for more information about a command.
+  Read the manual at https://cli.github.com/manual
+
+FEEDBACK
+  Open an issue using 'gh issue create -R github.com/cli/cli'
+
+alex@DESKTOP-U9KAQDK:~/git_basics/pure_practice/local_to_remote$
+ gh auth login
+? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? SSH
+? Upload your SSH public key to your GitHub account? /home/alex/.ssh/id_rsa.pub
+? How would you like to authenticate GitHub CLI? Paste an authentication token
+Tip: you can generate a Personal Access Token here https://github.com/settings/tokens
+The minimum required scopes are 'repo', 'read:org', 'admin:public_key'.
+? Paste your authentication token: *****************************- gh config set -h github.com git_protocol ssh
+✓ Configured git protocol
+HTTP 422: Validation Failed (https://api.github.com/user/keys)
+key is already in use
+
+... not sure what this is about.
+
+
+all that said, it seems to have worked...
+
+
+
+
+
+origin	git@github.com:Bit-Byte-Bit/local_to_remote.git (fetch)
+origin	git@github.com:Bit-Byte-Bit/local_to_remote.git (push)
+A  another_markdown_file.md
+M  xmpl_dir/file_to_stage.txt
+A  xmpl_mkdwn.md
+?? xmpl_dir/file_to_unstage.txt
+
+Now we'll delete the unstage file and commit.
+
+The instructions for creating a repo on a local machine, then pushing it to, and rendering it hosted on gh
+, were found here:
+	https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github
+
+git rm removes a file from the working tree (the directories under your cursor) only if it is in the index. This is to say that the index is how git knows about files, and thus how it can seek them out and deleat them. Git "knows" about untracked files in that it's aware that they exist, but git rm cannot remove them.
+
+
+
